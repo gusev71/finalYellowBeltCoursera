@@ -1,6 +1,10 @@
 #include "date.h"
 
-Date ParseDate(const std::istringstream &is)
+#include <string>
+
+using namespace std;
+
+Date ParseDate(istream &is)
 {
    int y = 0;
    int m = 0;
@@ -22,8 +26,8 @@ std::ostream& operator <<(std::ostream &os, const Date date)
 {
     char dash = '-';
     string y = to_string(date._year);
-    string m = to_string(date.month_);
-    string d =to_string(date.day_);
+    string m = to_string(date._month);
+    string d =to_string(date._day);
 
     for(int i = y.length(); i < 4; ++i)
         os << "0";

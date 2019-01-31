@@ -1,8 +1,10 @@
 #ifndef DATE_H
 #define DATE_H
-#include <istream>
 
-Date ParseDate(const std::istringstream &is);
+#include <istream>
+#include <sstream>
+
+class Date ParseDate(std::istream &is);
 
 class Date
 {
