@@ -18,7 +18,7 @@ Date::Date(int y, int m, int d) : _year(y), _month(m), _day(d)
 
 }
 
-std::ostream& operator <<(std::ostream &os, Date date)
+std::ostream& operator <<(std::ostream &os, const Date date)
 {
     char dash = '-';
     string y = to_string(date._year);
@@ -40,7 +40,7 @@ std::ostream& operator <<(std::ostream &os, Date date)
 
 
 
-bool operator <(Date date1, Date date2)
+bool operator <(const Date date1, const Date date2)
 {
     if(date1._year == date2._year){
         if(date1._month == date2._month){
@@ -51,4 +51,41 @@ bool operator <(Date date1, Date date2)
     }
     else
         return date1._year < date2._year;
+}
+
+bool operator >(const Date date1, const Date date2)
+{
+    if(date1._year == date2._year){
+        if(date1._month == date2._month){
+            return date1._day > date2._day;
+        }
+        else
+            return date1._month > date2._month;
+    }
+    else
+        return date1._year > date2._year;
+}
+
+bool operator ==(const Date date1, const Date date2)
+{
+    return date1._month == date2._month
+            && date1._month == date2._month
+            && date1._day == date2._day;
+}
+
+bool operator !=(const Date date1, const Date date2)
+{
+    return date1._month != date2._month
+            || date1._month != date2._month
+            || date1._day != date2._day;
+}
+
+bool operator <=(const Date date1, const Date date2)
+{
+    return date1 < date2 || date1 == date2;
+}
+
+bool operator >=(const Date date1, const Date date2)
+{
+    return date1 > date2 || date1 == date2;
 }

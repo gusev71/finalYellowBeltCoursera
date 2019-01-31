@@ -10,12 +10,12 @@ public:
     Date(int, int, int);
     const int _year, _month, _day;
 };
-    std::ostream &operator <<(std::ostream &os, Date date);
-    bool operator <(Date date1, Date date2);
-    bool operator >(Date date1, Date date2);
-    bool operator ==(Date date1, Date date2);
-    bool operator !=(Date date1, Date date2);
-    bool operator <=(Date date1, Date date2);
-    bool operator >=(Date date1, Date date2);
+    std::ostream &operator <<(std::ostream &os, const Date date);
+    bool operator <(const Date date1, const Date date2);
+    bool operator >(const Date date1, const Date date2);
+    bool operator ==(const Date date1, const Date date2);
+    bool operator !=(const Date date1, const Date date2);
+    bool operator <=(const Date date1, const Date date2);
+    bool operator >=(const Date date1, const Date date2);
 
 #endif // DATE_H
