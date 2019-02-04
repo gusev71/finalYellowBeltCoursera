@@ -5,6 +5,7 @@
 #include <ostream>
 #include <vector>
 #include "date.h"
+#include <set>
 
 struct Entry{
     Date date;
@@ -13,6 +14,8 @@ struct Entry{
 
 class Database
 {
+    map<Date, vector<string> > eventsByDate;
+    map<Date, set<string> > uniqueEvents;
 public:
     Database();
     void Add(const Date&, const std::string&);
