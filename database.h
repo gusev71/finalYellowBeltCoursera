@@ -6,6 +6,9 @@
 #include <vector>
 #include "date.h"
 #include <set>
+#include <map>
+
+using F = bool(*)(const Date& date, const std::string& event);
 
 struct Entry{
     Date date;
@@ -14,14 +17,14 @@ struct Entry{
 
 class Database
 {
-    map<Date, vector<string> > eventsByDate;
-    map<Date, set<string> > uniqueEvents;
+    std::map<Date, std::vector<std::string> > eventsByDate;
+    std::map<Date, std::set<std::string> > uniqueEvents;
 public:
     Database();
     void Add(const Date&, const std::string&);
     void Print(std::ostream&)const;
-    template<typename F> int RemoveIf(F);
-    template<typename F> std::vector<Entry> FindIf(F);
+    int RemoveIf(F);
+    std::vector<Entry> FindIf(F);
     std::string Last(const Date&)const;
 };
 

@@ -25,12 +25,12 @@ public:
     virtual ~Node(){}
 };
 
-class EmptyNode{
+class EmptyNode : public Node{
 public:
     bool Evaluate(const Date& date, const std::string& event) {return  true;}
 };
 
-class DateComparisonNode{
+class DateComparisonNode : public Node{
 public:
     DateComparisonNode(const Comparison& cmp, const Date& date);
     virtual bool Evaluate(const Date& date, const std::string& event)override;
@@ -40,7 +40,7 @@ private:
     Date _data;
 };
 
-class EventComparisonNode{
+class EventComparisonNode : public Node{
 public:
     EventComparisonNode(const Date& date, const std::string& event);
     virtual bool Evaluate(const Date& date, const std::string& event)override;
@@ -49,7 +49,7 @@ private:
     Comparison _cmp;
     std::string _event;
 };
-class LogicalOperationNode{
+class LogicalOperationNode : public Node{
 public:
     LogicalOperationNode(const LogicalOperation& lop,
                          const shared_ptr<Node>& nodeLeft,
