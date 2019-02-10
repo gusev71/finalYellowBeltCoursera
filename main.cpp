@@ -11,6 +11,12 @@ using namespace std;
 
 string ParseEvent(istream& is) {
     // Реализуйте эту функцию
+    string event;
+    getline(is, event);
+    while(event.at(0) == ' ')
+        event.erase(0, 1);
+
+    return event;
 }
 
 void TestAll();

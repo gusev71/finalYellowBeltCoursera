@@ -9,7 +9,7 @@ std::ostream &operator<<(std::ostream &os, const Entry &e)
 std::ostream &operator<<(std::ostream &os, const std::vector<Entry> &v)
 {
     for(const Entry e : v)
-        os <<  e;
+        os <<  e << std::endl;
     return os;
 }
 
@@ -23,22 +23,32 @@ std::ostream &operator<<(std::ostream &os, const std::vector<std::string> &event
 
 bool operator<(const Entry &left, const Entry &right)
 {
-    return left.date < right.date;
+    if(left.date == right.date)
+        return left.event < right.event;
+    else
+        return left.date < right.date;
 }
 
 bool operator>(const Entry &left, const Entry &right)
 {
-    return left.date > right.date;
+    if(left.date == right.date)
+        return left.event > right.event;
+    else
+        return left.date > right.date;
 }
 
 bool operator==(const Entry &e, const std::string &str)
 {
-    return e.event == str;
+    std::stringstream ss;
+    ss << e.date << ' ' << e.event;
+    return (str == e.event || str == ss.str());
 }
 
 bool operator!=(const Entry &e, const std::string &str)
 {
-    return e.event != str;
+    std::stringstream ss;
+    ss << e.date << ' ' << e.event;
+    return (str != e.event && str != ss.str());
 }
 
 Database::Database()
