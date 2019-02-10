@@ -42,7 +42,7 @@ private:
 
 class EventComparisonNode : public Node{
 public:
-    EventComparisonNode(const Date& date, const std::string& event);
+    EventComparisonNode(const Comparison cmp, const std::string& event);
     virtual bool Evaluate(const Date& date, const std::string& event)override;
 
 private:

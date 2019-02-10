@@ -1,5 +1,4 @@
 #include "database.h"
-#include <algorithm>
 
 std::ostream &operator<<(std::ostream &os, const Entry &e)
 {
@@ -61,49 +60,6 @@ void Database::Print(std::ostream& os) const
         if(!pair.second.empty())
             for(const std::string& e : pair.second)
                 os << pair.first << ' ' << e << std::endl;
-}
-
-int Database::RemoveIf(F f)
-{
-    int total = 0;
-    for (auto& entry : eventsByDate)
-    {
-        {
-            int count = 0, del = 0;
-            const Date& date = entry.first;
-            auto bound = std::stable_partition(entry.second.begin(),
-                                          entry.second.end(),
-                                          [date, f](const std::string& event){
-                bool Erase = f(date, event);
-                return !Erase;
-            });
-            if(bound != entry.second.end()) del = entry.second.end() - bound;
-            for(int i = 0; i < del; ++i) {
-                if(!entry.second.empty()) {
-                    Entry erz {date, entry.second.back()};
-                    eventsUnique.erase(erz);
-                    entry.second.pop_back();
-                    ++count;
-                }
-                else {
-                    eventsByDate.erase(date);
-                }
-            }
-
-            total += count;
-            if(entry.second.empty()) eventsByDate.erase(date);
-        }
-    }
-    return total;
-}
-
-std::vector<Entry> Database::FindIf(F f)
-{
-    std::vector<Entry> res;
-    for(const auto& pair : eventsByDate)
-        for(const std::string& event : pair.second)
-            if(f(pair.first, event))res.push_back({pair.first, event});
-    return res;
 }
 
 std::string Database::Last(const Date &date) const
