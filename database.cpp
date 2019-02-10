@@ -51,6 +51,16 @@ bool operator!=(const Entry &e, const std::string &str)
     return (str != e.event && str != ss.str());
 }
 
+bool operator==(const Entry& left, const Entry& right)
+{
+    return (left.date == right.date) && (left.event == right.event);
+}
+
+bool operator!=(const Entry& left, const Entry& right)
+{
+    return left.date != right.date || left.event != right.event;
+}
+
 Database::Database()
 {
 
@@ -58,6 +68,10 @@ Database::Database()
 
 void Database::Add(const Date& date, const std::string& event)
 {
+//    for(const std::string & e : eventsByDate[date])
+//        if(e == event) return;
+//    eventsByDate[date].push_back(event);
+//    eventsUnique.insert({date, event});
     if(eventsUnique.count({date, event}) == 0){
         eventsByDate[date].push_back(event);
         eventsUnique.insert({date, event});

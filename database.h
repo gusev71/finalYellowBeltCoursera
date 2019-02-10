@@ -20,12 +20,14 @@ std::ostream& operator<<(std::ostream&, const std::vector<std::string>&);
 
 bool operator<(const Entry&, const Entry&);
 bool operator>(const Entry&, const Entry&);
+bool operator==(const Entry&, const Entry&);
+bool operator!=(const Entry&, const Entry&);
 bool operator==(const Entry&, const std::string&);
 bool operator!=(const Entry&, const std::string&);
 
 class Database
 {
-    std::map<Date, std::vector<std::string>> eventsByDate;
+    std::map<Date, std::vector<std::string> > eventsByDate;
     std::set<Entry> eventsUnique;
 
 public:
@@ -65,8 +67,9 @@ public:
         }
         return total;
     }
+
     template<typename F>
-    std::vector<Entry> FindIf(F f){
+    std::vector<Entry> FindIf(F f)const{
         std::vector<Entry> res;
         for(const auto& pair : eventsByDate)
             for(const std::string& event : pair.second)

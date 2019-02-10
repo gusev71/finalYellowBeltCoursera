@@ -17,10 +17,7 @@ Date ParseDate(istream &is)
 
 }
 
-Date::Date(int y, int m, int d) : _year(y), _month(m), _day(d)
-{
-
-}
+Date::Date(int y, int m, int d) : _year(y), _month(m), _day(d){}
 
 std::ostream& operator <<(std::ostream &os, const Date date)
 {
