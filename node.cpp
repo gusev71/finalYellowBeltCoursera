@@ -1,10 +1,5 @@
 #include "node.h"
 
-Node::Node()
-{
-
-}
-
 bool DateComparisonNode::Evaluate(const Date &date, const string &event)
 {
     switch (_cmp) {
