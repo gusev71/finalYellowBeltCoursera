@@ -13,8 +13,12 @@ string ParseEvent(istream& is) {
     // Реализуйте эту функцию
     string event;
     getline(is, event);
+
     while(event.at(0) == ' ')
         event.erase(0, 1);
+
+//    while(event.back()  == ' ')
+//        event.pop_back();
 
     return event;
 }

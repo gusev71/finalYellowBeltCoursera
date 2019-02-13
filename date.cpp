@@ -14,7 +14,6 @@ Date ParseDate(istream &is)
    is >> y >> dash >> m >> dash >> d;
 
    return {y, m, d};
-
 }
 
 Date::Date(int y, int m, int d) : _year(y), _month(m), _day(d){}

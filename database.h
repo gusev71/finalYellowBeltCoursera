@@ -34,36 +34,31 @@ public:
     Database();
     void Add(const Date&, const std::string&);
     void Print(std::ostream&)const;
-    template<typename F>
-    int RemoveIf(F f){
+    template<typename Pred>
+    int RemoveIf(Pred pred){
         int total = 0;
-        for (auto& entry : eventsByDate)
-        {
-            {
-                int count = 0, del = 0;
-                const Date& date = entry.first;
-                auto bound = std::stable_partition(entry.second.begin(),
-                                                   entry.second.end(),
-                                                   [date, f](const std::string& event){
-                    bool Erase = f(date, event);
-                    return !Erase;
-                });
-                if(bound != entry.second.end()) del = entry.second.end() - bound;
-                for(int i = 0; i < del; ++i) {
-                    if(!entry.second.empty()) {
-                        Entry erz {date, entry.second.back()};
-                        eventsUnique.erase(erz);
-                        entry.second.pop_back();
-                        ++count;
-                    }
-                    else {
-                        eventsByDate.erase(date);
-                    }
+        for (auto& entry : eventsByDate){
+            int count = 0;
+            const Date& date = entry.first;
+            auto bound = std::stable_partition(entry.second.begin(),
+                                               entry.second.end(),
+                                               [date, pred](const std::string& event){
+                return !pred(date, event);
+            });
+            int del = std::distance(bound, entry.second.end());
+            for(int i = 0; i < del; ++i) {
+                if(!entry.second.empty()) {
+                    Entry e{date, entry.second.back()};
+                    eventsUnique.erase(e);
+                    entry.second.pop_back();
+                    ++count;
                 }
-
-                total += count;
-                if(entry.second.empty()) eventsByDate.erase(date);
+                else
+                    eventsByDate.erase(date);
             }
+            total += count;
+            if(entry.second.empty())
+                eventsByDate.erase(date);
         }
         return total;
     }

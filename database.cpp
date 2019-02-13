@@ -68,10 +68,6 @@ Database::Database()
 
 void Database::Add(const Date& date, const std::string& event)
 {
-//    for(const std::string & e : eventsByDate[date])
-//        if(e == event) return;
-//    eventsByDate[date].push_back(event);
-//    eventsUnique.insert({date, event});
     if(eventsUnique.count({date, event}) == 0){
         eventsByDate[date].push_back(event);
         eventsUnique.insert({date, event});
@@ -91,7 +87,7 @@ std::string Database::Last(const Date &date) const
     std::string s = "";
     if (date == Date{0,0,0}) throw std::invalid_argument("No entries");;
     auto firstGreaterIt = eventsByDate.upper_bound(date);
-    if (firstGreaterIt!=begin(eventsByDate))
+    if (firstGreaterIt != begin(eventsByDate))
     {
         auto lastNotGreaterIt = prev(firstGreaterIt);
         if ( ! lastNotGreaterIt->second.empty() ) {
