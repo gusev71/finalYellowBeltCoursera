@@ -68,9 +68,9 @@ Database::Database()
 
 void Database::Add(const Date& date, const std::string& event)
 {
-    if(eventsUnique.count({date, event}) == 0){
+    if(eventsUnique[date].count(event) == 0){
         eventsByDate[date].push_back(event);
-        eventsUnique.insert({date, event});
+        eventsUnique[date].insert(event);
     }
 }
 

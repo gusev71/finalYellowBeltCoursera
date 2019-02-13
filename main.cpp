@@ -98,3 +98,16 @@ void TestAll() {
     tr.RunTest(TestParseEvent, "TestParseEvent");
     tr.RunTest(TestParseCondition, "TestParseCondition");
 }
+/*
+ {
+        Database db;
+        db.Add({2017, 1, 1}, "first");
+        db.Add({2017, 1, 1}, "second");
+        db.Add({2017, 1, 1}, "third");
+        db.Add({2017, 1, 1}, "fourth");
+        db.Add({2017, 1, 1}, "five");
+        AssertEqual(2, DoRemove(db, R"(event == "second" OR event == "fourth")"), "Remove several");
+        AssertEqual("2017-01-01 first\n2017-01-01 third\n2017-01-01 five\n", DoPrint(db), "Check print after remove several- 3");
+
+  }
+*/

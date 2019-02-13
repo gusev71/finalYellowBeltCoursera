@@ -28,41 +28,37 @@ bool operator!=(const Entry&, const std::string&);
 class Database
 {
     std::map<Date, std::vector<std::string> > eventsByDate;
-    std::set<Entry> eventsUnique;
+    std::map<Date, std::set<std::string>> eventsUnique;
 
 public:
     Database();
     void Add(const Date&, const std::string&);
     void Print(std::ostream&)const;
+
     template<typename Pred>
     int RemoveIf(Pred pred){
         int total = 0;
         for (auto& entry : eventsByDate){
-            int count = 0;
             const Date& date = entry.first;
-            auto bound = std::stable_partition(entry.second.begin(),
+            auto bound = std::remove_if(entry.second.begin(),
                                                entry.second.end(),
-                                               [date, pred](const std::string& event){
-                return !pred(date, event);
+                                               [=](const std::string& event){
+                bool b = pred(date, event);
+                if(b)eventsUnique[date].erase(event);
+                return b;
             });
             int del = std::distance(bound, entry.second.end());
-            for(int i = 0; i < del; ++i) {
-                if(!entry.second.empty()) {
-                    Entry e{date, entry.second.back()};
-                    eventsUnique.erase(e);
-                    entry.second.pop_back();
-                    ++count;
-                }
-                else
-                    eventsByDate.erase(date);
+            if(del > 0){
+                entry.second.erase(bound, entry.second.end());
             }
-            total += count;
-            if(entry.second.empty())
+            if(eventsByDate[date].empty()){
                 eventsByDate.erase(date);
+                eventsUnique.erase(date);
+            }
+            total += del;
         }
         return total;
     }
-
     template<typename F>
     std::vector<Entry> FindIf(F f)const{
         std::vector<Entry> res;
