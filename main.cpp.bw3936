@@ -71,6 +71,17 @@ int main() {
             throw logic_error("Unknown command: " + command);
         }
     }
+    {
+           Database db;
+           db.Add({2017, 1, 1}, "first");
+           db.Add({2017, 1, 1}, "second");
+           db.Add({2017, 1, 1}, "third");
+           db.Add({2017, 1, 1}, "fourth");
+           db.Add({2017, 1, 1}, "five");
+           AssertEqual(2, DoRemove(db, R"(event == "second" OR event == "fourth")"), "Remove several");
+           AssertEqual("2017-01-01 first\n2017-01-01 third\n2017-01-01 five\n", DoPrint(db), "Check print after remove several- 3");
+
+     }
     return 0;
 }
 
@@ -98,12 +109,6 @@ void TestAll() {
     tr.RunTest(TestParseCondition, "TestParseCondition");
 }
 /*
-  Add 2017-1-1 first
-  Add 2017-1-1 second
-  Add 2017-1-1 third
-  Add 2017-1-1 fourth
-  Add 2017-1-1 five
-  Del event == "second" OR event == "fourth"
  {
         Database db;
         db.Add({2017, 1, 1}, "first");

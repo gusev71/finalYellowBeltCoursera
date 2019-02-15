@@ -8,6 +8,7 @@
 #include <set>
 #include <map>
 #include <algorithm>
+#include <iostream>
 
 struct Entry{
     Date date;
@@ -27,7 +28,7 @@ bool operator!=(const Entry&, const std::string&);
 
 class Database
 {
-    std::map<Date, std::vector<std::string> > eventsByDate;
+    std::map<Date, std::vector<std::string>> eventsByDate;
     std::map<Date, std::set<std::string>> eventsUnique;
 
 public:
@@ -37,25 +38,31 @@ public:
 
     template<typename Pred>
     int RemoveIf(Pred pred){
+        std::set<Date> remDate;
         int total = 0;
-        for (auto& entry : eventsByDate){
+        for(auto& entry : eventsByDate){
             const Date& date = entry.first;
             auto bound = std::remove_if(entry.second.begin(),
-                                               entry.second.end(),
-                                               [=](const std::string& event){
+                                        entry.second.end(),
+                                        [=](const std::string& event){
                 bool b = pred(date, event);
                 if(b)eventsUnique[date].erase(event);
                 return b;
             });
             int del = std::distance(bound, entry.second.end());
             if(del > 0){
-                entry.second.erase(bound, entry.second.end());
+                eventsByDate[date].erase(bound, eventsByDate[date].end());
             }
             if(eventsByDate[date].empty()){
-                eventsByDate.erase(date);
-                eventsUnique.erase(date);
+                //eventsByDate.erase(date);
+                //eventsUnique.erase(date);
+                remDate.insert(date);
             }
             total += del;
+        }
+        for(const Date& date : remDate){
+            eventsByDate.erase(date);
+            eventsUnique.erase(date);
         }
         return total;
     }

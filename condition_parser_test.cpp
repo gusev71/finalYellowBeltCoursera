@@ -5,6 +5,7 @@
 using namespace std;
 
 void TestParseCondition() {
+
   {
     istringstream is("date != 2017-11-18");
     shared_ptr<Node> root = ParseCondition(is);
