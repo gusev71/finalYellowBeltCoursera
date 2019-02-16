@@ -38,43 +38,39 @@ public:
 
     template<typename Pred>
     int RemoveIf(Pred pred){
-        std::set<Date> remDate;
         int total = 0;
-        for(auto& entry : eventsByDate){
+        auto tmp = eventsByDate;
+        for(auto& entry : tmp){
             const Date& date = entry.first;
-            auto bound = std::remove_if(entry.second.begin(),
-                                        entry.second.end(),
-                                        [=](const std::string& event){
+            auto end = eventsByDate[date].end();
+            auto bound = std::stable_partition(eventsByDate[date].begin(),
+                                               end,
+                                               [=](const std::string& event){
                 bool b = pred(date, event);
                 if(b)eventsUnique[date].erase(event);
-                return b;
+                return !b;
             });
-            int del = std::distance(bound, entry.second.end());
+            int del = std::distance(bound, end);
             if(del > 0){
-                eventsByDate[date].erase(bound, eventsByDate[date].end());
+                eventsByDate[date].erase(bound, end);
             }
             if(eventsByDate[date].empty()){
-                //eventsByDate.erase(date);
-                //eventsUnique.erase(date);
-                remDate.insert(date);
+                eventsByDate.erase(date);
+                eventsUnique.erase(date);
             }
             total += del;
         }
-        for(const Date& date : remDate){
-            eventsByDate.erase(date);
-            eventsUnique.erase(date);
-        }
         return total;
     }
-    template<typename F>
-    std::vector<Entry> FindIf(F f)const{
+    template<typename Pred>
+    std::vector<Entry> FindIf(Pred pred)const{
         std::vector<Entry> res;
         for(const auto& pair : eventsByDate)
             for(const std::string& event : pair.second)
-                if(f(pair.first, event))res.push_back({pair.first, event});
+                if(pred(pair.first, event))res.push_back({pair.first, event});
         return res;
     }
-    std::string Last(const Date&)const;
+    Entry Last(const Date&)const;
 };
 
 #endif // DATABASE_H

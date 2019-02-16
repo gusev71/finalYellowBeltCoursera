@@ -82,27 +82,16 @@ void Database::Print(std::ostream& os) const
                 os << pair.first << ' ' << e << std::endl;
 }
 
-std::string Database::Last(const Date &date) const
+Entry Database::Last(const Date &date) const
 {
-    std::string s = "";
-    if (date == Date{0,0,0}) throw std::invalid_argument("No entries");;
+    if (date < eventsByDate.begin()->first)
+        throw std::invalid_argument("No entries");;
     auto firstGreaterIt = eventsByDate.upper_bound(date);
-    if (firstGreaterIt != begin(eventsByDate))
-    {
+    if(firstGreaterIt != begin(eventsByDate)){
         auto lastNotGreaterIt = prev(firstGreaterIt);
-        if ( ! lastNotGreaterIt->second.empty() ) {
-            std::stringstream ss;
-            ss << lastNotGreaterIt->first;
-            s = ss.str() + " " + lastNotGreaterIt->second.back();
+        if(!lastNotGreaterIt->second.empty()){
+            return {lastNotGreaterIt->first, lastNotGreaterIt->second.back()};
         }
-        return s;
+        throw std::invalid_argument("No entries");
     } else throw std::invalid_argument("No entries");
 }
-
-
-
-
-
-
-
-
